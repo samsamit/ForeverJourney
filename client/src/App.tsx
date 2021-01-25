@@ -64,7 +64,7 @@ function App() {
 
         <div className="content-container">
           {loading ? (
-            "LOADING..."
+            "SUPER FAST LOADING..."
           ) : (
             <Switch>
               <Route exact path="/login" component={login} />
