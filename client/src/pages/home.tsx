@@ -3,7 +3,7 @@ import { connect, useSelector } from "react-redux";
 import { Styles } from "@material-ui/styles";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import CharacterCard from "../components/CharacterCard";
+import CharacterCard from "../components/character/CharacterCard";
 import Profile from "../components/Profile";
 import { Character } from "../Types/Character/characterTypes";
 import { IRootState } from "../redux/store";

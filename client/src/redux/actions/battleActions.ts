@@ -2,7 +2,7 @@ import axios from "axios";
 import _ from "lodash";
 import { exit } from "process";
 import { useDispatch, useSelector } from "react-redux";
-import CharacterCard from "../../components/CharacterCard";
+import CharacterCard from "../../components/character/CharacterCard";
 import { Character, CharacterClass, StatusEnum } from "../../Types/Character/characterTypes";
 import { IRootState } from "../store";
 import { ADD_PLAYER, BattleState, BATTLE_UPDATE, CLEAR_ERRORS, LOADING_UI, NEXT_TURN, SET_ERRORS } from "../types";
