@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 //character routes
-const { getAllCharacters, createCharacter } = require('./handlers/characters');
+const { getAllCharacters, createCharacter, updateCharacter } = require('./handlers/characters');
 const { signup, login, addUserDetails, getAuthenticatedUser, } = require('./handlers/users');
 const app = require('express')();
 const cors = require("cors");
@@ -11,6 +11,7 @@ const { FBAuth } = require('./util/FBAuth');
 //character routes
 app.get('/characters', FBAuth, getAllCharacters);
 app.post('/character', FBAuth, createCharacter);
+app.post('/updateCharacter', FBAuth, updateCharacter);
 //User routes
 app.post('/signup', signup);
 app.post('/login', login);

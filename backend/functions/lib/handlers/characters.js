@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const admin_1 = require("../util/admin");
+const { validateCharacter } = require('../util/validators');
 exports.getAllCharacters = (req, res) => {
     admin_1.db
         .collection('users')
@@ -19,28 +20,28 @@ exports.getAllCharacters = (req, res) => {
 };
 //Add character to user subcollection 'userCharacters'
 exports.createCharacter = (req, res) => {
-    var _a, _b;
-    if (((_a = req.body) === null || _a === void 0 ? void 0 : _a.name.trim()) === '')
-        return res.status(400).json({ name: 'Character must have name!' });
-    if (((_b = req.body) === null || _b === void 0 ? void 0 : _b.race.trim()) === '')
-        return res.status(400).json({ name: 'Character must have race!' });
-    const dbRef = admin_1.db.collection('users').doc(req.user.handle).collection('userCharacters');
-    const newChar = {
-        uid: req.body.uid,
-        name: req.body.name,
-        race: req.body.race,
-        avatarPath: req.body.avatarPath,
-        createdAt: new Date().toISOString(),
-        attributes: { atk: 1, hp: 10 },
-        userHandle: req.user.handle,
-    };
-    dbRef.doc(req.body.name).get()
+    const { valid, errors } = validateCharacter(req.body);
+    if (!valid)
+        return res.status(400).json(errors);
+    const newChar = req.body.createdAt ? req.body :
+        {
+            uid: req.body.uid,
+            name: req.body.name,
+            race: req.body.race,
+            avatarPath: (typeof req.body.avatarPath === "undefined" ? "" : req.body.avatarPath),
+            createdAt: new Date().toISOString(),
+            baseAttributes: { atk: 1, hp: 10 },
+            userHandle: req.user.handle,
+        };
+    const docRef = admin_1.db.collection('users').doc(req.user.handle).collection('userCharacters');
+    docRef.doc(req.body.name).get()
         .then(doc => {
         if (doc.exists)
             return res.status(400).json({ name: 'This character name is already taken' });
         else {
-            dbRef
-                .add(newChar)
+            docRef
+                .doc(newChar.name)
+                .set(newChar)
                 .then(() => {
                 res.json({ message: 'Character created succesfully' });
             })
@@ -53,6 +54,14 @@ exports.createCharacter = (req, res) => {
         .catch((err) => {
         res.status(500).json({ error: err });
         console.log(err);
+    });
+};
+exports.updateCharacter = (req, res) => {
+    const docRef = admin_1.db.collection('users').doc(req.user.handle).collection('userCharacters').doc(req.body.name);
+    docRef.set(req.body)
+        .then(() => res.json({ message: 'Character updated succesfully' }))
+        .catch(err => {
+        res.status(500).json({ error: err });
     });
 };
 //Working example of transaction

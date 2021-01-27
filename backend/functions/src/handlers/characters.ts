@@ -3,6 +3,8 @@ import DocumentData = firebase.firestore.DocumentData;
 import {db} from '../util/admin';
 import { UserCharacter } from "../types/types";
 
+const {validateCharacter} = require('../util/validators');
+
 exports.getAllCharacters = (req, res) => {
     db    
     .collection('users')
@@ -22,28 +24,30 @@ exports.getAllCharacters = (req, res) => {
 
 //Add character to user subcollection 'userCharacters'
 exports.createCharacter = (req, res) => {
-    if(req.body?.name.trim() === '') return res.status(400).json({name: 'Character must have name!'});
-    if(req.body?.race.trim() === '') return res.status(400).json({name: 'Character must have race!'});
+    const {valid, errors} = validateCharacter(req.body);
+    if (!valid) return res.status(400).json(errors);
 
-    const dbRef = db.collection('users').doc(req.user.handle).collection('userCharacters');
-    const newChar: UserCharacter = {
+    const newChar: UserCharacter = req.body.createdAt ? req.body :
+    {
         uid: req.body.uid,
         name: req.body.name,
         race: req.body.race,
-        avatarPath: req.body.avatarPath,
+        avatarPath: (typeof req.body.avatarPath === "undefined" ? "" : req.body.avatarPath),
         createdAt: new Date().toISOString(),
-        attributes: {atk: 1, hp: 10},
+        baseAttributes: {atk: 1, hp: 10},
         userHandle: req.user.handle,
     };
-
-    dbRef.doc(req.body.name).get()
+    const docRef = db.collection('users').doc(req.user.handle).collection('userCharacters');
+    docRef.doc(req.body.name).get()
     .then(doc => {
         if(doc.exists) return res.status(400).json({name: 'This character name is already taken'});
         else{
-            dbRef    
-            .add(newChar)
+            docRef
+            .doc(newChar.name)
+            .set(newChar)
             .then(() => {
                 res.json({message: 'Character created succesfully'});
+
             })
             .catch((err: any) => {
                 res.status(500).json({error: err});
@@ -56,7 +60,15 @@ exports.createCharacter = (req, res) => {
         console.log(err);
     })
 }
-
+ 
+exports.updateCharacter = (req, res) => {
+    const docRef = db.collection('users').doc(req.user.handle).collection('userCharacters').doc(req.body.name);
+    docRef.set(req.body)
+    .then(() => res.json({message: 'Character updated succesfully'}))
+    .catch(err => {
+        res.status(500).json({error: err});
+    })
+}
 
 //Working example of transaction
 /*

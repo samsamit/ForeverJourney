@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 
 //character routes
-const {getAllCharacters, createCharacter} = require('./handlers/characters');
+const {getAllCharacters, createCharacter, updateCharacter} = require('./handlers/characters');
 const {
     signup,
     login,
@@ -19,6 +19,7 @@ const {FBAuth} = require('./util/FBAuth');
 //character routes
 app.get('/characters', FBAuth, getAllCharacters);
 app.post('/character', FBAuth, createCharacter);
+app.post('/updateCharacter', FBAuth, updateCharacter);
 //User routes
 app.post('/signup', signup);
 app.post('/login', login);

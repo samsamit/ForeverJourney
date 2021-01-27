@@ -1,15 +1,16 @@
 export type Errors = {
-    email: String,
-    password: String,
-    handle: String,
-    confirmPassword: String,
+    email: string,
+    password: string,
+    handle: string,
+    confirmPassword: string,
+    name: string,
 }
 
 export interface Character {
   uid: string;
   name: string;
   race: string;
-  attributes: CharacterAttributes;
+  baseAttributes: CharacterAttributes;
   avatarPath?: string;
   currentState?: CharacterCurrentState;
 }

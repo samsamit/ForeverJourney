@@ -53,4 +53,15 @@ exports.reduceUserDetails = (data) => {
         userDetails.bio = data.bio;
     return userDetails;
 };
+exports.validateCharacter = (data) => {
+    let errors = {};
+    if (data.name.trim() === '')
+        errors.name = 'Character must have name!';
+    if (data.race.trim() === '')
+        errors.name = 'Character must have race!';
+    return {
+        errors,
+        valid: Object.keys(errors).length === 0,
+    };
+};
 //# sourceMappingURL=validators.js.map
