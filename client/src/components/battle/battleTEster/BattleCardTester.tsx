@@ -24,6 +24,7 @@ import {
 } from "../../../redux/types";
 import SelectPlayersToBattle from "./SelectPlayersToBattle";
 import StatusBar from "../../character/StatusBar";
+import _ from "lodash";
 
 const styles: Styles<Theme, Record<string, unknown>, string> = (
   theme: Theme
@@ -63,6 +64,7 @@ const BattleCardTester = (props: IProps) => {
   const [targetted, setTargetted] = useState(false);
   const [myTurn, setmyTurn] = useState(false);
   const { classes, character } = props;
+  const doWeHaveCharacter = !_.isEmpty(character) && !_.isUndefined(character);
   const dispatch = useDispatch();
   const battleState: BattleState = useSelector(
     (state: IRootState) => state.battle
@@ -74,21 +76,19 @@ const BattleCardTester = (props: IProps) => {
     setmyTurn(battleState.playerTurn === character?.uid);
   }, [battleState.playerTurn]);
 
-  const charAttributes = () => {
-    return (
-      <Grid container direction="row" justify="center" alignItems="center">
-        {Object.keys(character.attributes).map((key, i) => {
-          return (
-            <Grid key={i} item xs>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {key + " " + character.attributes[key]}
-              </Typography>
-            </Grid>
-          );
-        })}
-      </Grid>
-    );
-  };
+  const charAttributes = doWeHaveCharacter && (
+    <Grid container direction="row" justify="center" alignItems="center">
+      {Object.keys(character.baseAttributes).map((key, i) => {
+        return (
+          <Grid key={i} item xs>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {key + " " + character.baseAttributes[key]}
+            </Typography>
+          </Grid>
+        );
+      })}
+    </Grid>
+  );
 
   const characterClick = () => {
     if (targetTrakking) dispatch({ type: ADD_TARGET, payload: character?.uid });
@@ -108,7 +108,7 @@ const BattleCardTester = (props: IProps) => {
   `;
 
   const selectCharacter = <SelectPlayersToBattle />;
-  const showCharacter = character && (
+  const showCharacter = doWeHaveCharacter && (
     <Card className={cardClasses}>
       <CardActionArea onClick={characterClick}>
         <CardMedia
@@ -120,10 +120,10 @@ const BattleCardTester = (props: IProps) => {
           <Typography gutterBottom variant="h5" component="h2">
             {character.name + targetted}
           </Typography>
-          {charAttributes()}
+          {charAttributes}
           <StatusBar
             currentValue={character.currentState.attributes.hp}
-            maxValue={character.attributes.hp}
+            maxValue={character.baseAttributes.hp}
           />
         </CardContent>
       </CardActionArea>
@@ -144,7 +144,7 @@ const BattleCardTester = (props: IProps) => {
     </Card>
   );
 
-  return character ? showCharacter : selectCharacter;
+  return doWeHaveCharacter ? showCharacter : selectCharacter;
 };
 
 export default withStyles(styles)(BattleCardTester);

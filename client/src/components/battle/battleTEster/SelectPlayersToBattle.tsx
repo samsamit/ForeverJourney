@@ -12,6 +12,7 @@ import { generateEnemy } from "../../../functions/enemies/generateEnemy";
 import { IRootState } from "../../../redux/store";
 import { selectPlayer } from "../../../redux/actions/battleActions";
 import { Character } from "../../../Types/Character/characterTypes";
+import _ from "lodash";
 
 const styles: Styles<Theme, Record<string, unknown>, string> = (
   theme: Theme
@@ -36,42 +37,49 @@ const SelectPlayersToBattle = (props: IProps) => {
   const userCharacters = useSelector(
     (state: IRootState) => state.user.userData.characters
   );
-  const otherPlayerInBattle: Array<Character> = useSelector(
+  const otherPlayersInBattle: Array<Character> = useSelector(
     (state: IRootState) => state.battle.players
   );
   const dispatch = useDispatch();
   const getRandomEnemy = () => {
     dispatch({ type: ADD_PLAYER, payload: generateEnemy() });
   };
+
   const recentCharactersMarkup = userCharacters ? (
-    userCharacters.map((char: Character, i) => (
-      <div key={i}>
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          justify="center"
-          key={i}
-        >
-          <Grid item xs={12} sm={6}>
-            <Typography variant="h5" color="primary">
-              {char.name}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.battleWithButton}
-              onClick={() => dispatch(selectPlayer(char, otherPlayerInBattle))}
+    userCharacters.map((char: Character, i) => {
+      if (!_.includes(otherPlayersInBattle, char)) {
+        return (
+          <div key={i}>
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justify="center"
+              key={i}
             >
-              Battle with this
-            </Button>
-          </Grid>
-        </Grid>
-        <Divider />
-      </div>
-    ))
+              <Grid item xs={12} sm={6}>
+                <Typography variant="h5" color="primary">
+                  {char.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.battleWithButton}
+                  onClick={() =>
+                    dispatch(selectPlayer(char, otherPlayersInBattle))
+                  }
+                >
+                  Battle with this
+                </Button>
+              </Grid>
+            </Grid>
+            <Divider />
+          </div>
+        );
+      }
+    })
   ) : (
     <p>Loading...</p>
   );

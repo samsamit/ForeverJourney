@@ -4,7 +4,7 @@ export interface playerCharacter {
   uid: string;
   name: string;
   race: string;
-  attributes: CharacterAttributes;
+  baseAttributes: CharacterAttributes;
   avatarPath?: string;
   currentState: CharacterCurrentState;
 }
@@ -45,16 +45,16 @@ export class CharacterClass {
   }
 
   basicAttack = (): number => {
+    console.log("Ill make this much damage: " + this.character.currentState.attributes.atk);
     return this.character.currentState.attributes.atk;
   }
 
   takeDamage = (inputDamage: number): void => {
-    this.character.currentState.attributes.hp =  this.character.currentState.attributes.hp - inputDamage;
+    this.character.currentState.attributes.hp = this.character.currentState.attributes.hp - inputDamage;
     if(this.character.currentState.attributes.hp <= 0){
       this.character.currentState.status = StatusEnum.dead;
     }
   }
-
 
   get getCharacterObject(){return this.character}
 }

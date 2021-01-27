@@ -7,11 +7,11 @@ export const generateEnemy = () => {
       uid: getUid(),
       name: "Bot",
       race: "Robot",
-      attributes: {
+      baseAttributes: {
         atk: 1,
         hp: 10,
       },
-      currentState: { attributes: { atk: 1, hp: 10 }, initiative: 2, status: StatusEnum.null },
+      currentState: { attributes: { atk: 1, hp: 10 }, initiative: 2, status: StatusEnum.null},
       avatarPath: getRandomAvatar(),
     };
     return newEnemy;

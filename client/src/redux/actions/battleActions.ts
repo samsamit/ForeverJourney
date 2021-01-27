@@ -1,4 +1,5 @@
 import axios from "axios";
+import _ from "lodash";
 import { exit } from "process";
 import { useDispatch, useSelector } from "react-redux";
 import CharacterCard from "../../components/CharacterCard";
@@ -11,7 +12,7 @@ export const selectPlayer = (player: Character, otherPlayers: Array<Character>) 
     if (!player.currentState) {
         player.currentState = {
             initiative: otherPlayers.length,
-            attributes: player.attributes,
+            attributes: {...player.baseAttributes},
             status: StatusEnum.null,
         };
       }

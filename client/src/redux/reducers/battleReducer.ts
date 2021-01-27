@@ -31,8 +31,9 @@ export default function (state = initialState, action: any) {
         case REMOVE_PLAYER:
             return{
                 ...state,
-                players: [...state.players, state.players.filter(player => player !== action.payload)],
+                players: state.players.filter(player => player !== action.payload),
             }
+
         case NEXT_TURN:
             return{
                 ...state,
