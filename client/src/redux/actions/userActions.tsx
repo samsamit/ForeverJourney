@@ -78,7 +78,7 @@ export const getUserData = () => (dispatch: any) => {
 export const editUserDetails = (userDetails) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .post("/user", userDetails)
+    .post("/user/details", userDetails)
     .then(() => {
       dispatch(getUserData());
     })

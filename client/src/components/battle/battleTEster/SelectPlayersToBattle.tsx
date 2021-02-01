@@ -34,7 +34,7 @@ interface IProps {
 
 const SelectPlayersToBattle = (props: IProps) => {
   const { classes } = props;
-  const userCharacters = useSelector(
+  const userCharacters: Array<Character> = useSelector(
     (state: IRootState) => state.user.userData.characters
   );
   const otherPlayersInBattle: Array<Character> = useSelector(

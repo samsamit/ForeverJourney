@@ -42,17 +42,17 @@ exports.validateLoginData = (data) =>{
 };
 
 exports.reduceUserDetails = (data) =>{
-    let userDetails = {
-        bio: undefined,
+    let errors = {} as Errors;
+    return {
+        errors,
+        valid: Object.keys(errors).length === 0,
     };
-    if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
-  return userDetails;
 };
 
 exports.validateCharacter = (data: Character) => {
     let errors = {} as Errors;
-    if(data.name.trim() === '') errors.name = 'Character must have name!';
-    if(data.race.trim() === '') errors.name = 'Character must have race!';
+    if(data.name?.trim() === '') errors.name = 'Character must have name!';
+    if(data.race?.trim() === '') errors.name = 'Character must have race!';
      
     return {
         errors,

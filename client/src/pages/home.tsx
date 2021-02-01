@@ -19,11 +19,13 @@ interface IProps {
 
 const home = (props: IProps) => {
   const { classes } = props;
-  const characters = useSelector(
+  const characters: Array<Character> = useSelector(
     (state: IRootState) => state.user.userData.characters
   );
   const recentCharactersMarkup = characters ? (
-    characters.map((char: any, i) => <CharacterCard key={i} character={char} />)
+    characters.map((char: Character, i: number) => (
+      <CharacterCard key={i} character={char} />
+    ))
   ) : (
     <p>Loading...</p>
   );

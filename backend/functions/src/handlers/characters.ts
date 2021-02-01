@@ -61,6 +61,7 @@ exports.createCharacter = (req, res) => {
     })
 }
  
+//TODO: update character from party also
 exports.updateCharacter = (req, res) => {
     const docRef = db.collection('users').doc(req.user.handle).collection('userCharacters').doc(req.body.name);
     docRef.set(req.body)
@@ -69,31 +70,22 @@ exports.updateCharacter = (req, res) => {
         res.status(500).json({error: err});
     })
 }
-
-//Working example of transaction
 /*
-exports.postCharacter = (req, res) => {
-    if(req.body?.name.trim() === '') return res.status(400).json({name: 'Character must have name!'});
-    if(req.body?.race.trim() === '') return res.status(400).json({name: 'Character must have race!'});
-    const newChar = {
-        name: req.body.name,
-        race: req.body.race,
-        createdAt: new Date().toISOString(),
-    };
+exports.addCharacterToUserParty = (req, res) => {
     const docRef = db.collection('users').doc(req.user.handle);
     db.runTransaction(transaction => {
         return transaction.get(docRef).then(userDoc => {
             if(!userDoc.exists){
-                docRef.set({userCharacters: newChar});
+                res.status(400).json({error: 'User not found'});
             }else{
-                const newCharacters =userDoc.data().userCharacters;
-                newCharacters[req.body.name] = newChar;
+                const newCharacters = userDoc.data().userCharacters;
+                newCharacters[req.body.name] = req.body;
                 transaction.update(docRef, {userCharacters: newCharacters})
             }
         })
     })
     .then(() => {
-        res.json({message: 'Character created succesfully'});
+        res.json({message: 'Character added to party'});
     })
     .catch((err: any) => {
         res.status(500).json({error: err});

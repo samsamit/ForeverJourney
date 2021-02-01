@@ -1,30 +1,44 @@
-export type Character = playerCharacter | UserCharacter;
+// ###########  To backend  ###################
 
+import _ from "lodash";
+
+export type Character = playerCharacter | UserCharacter;
 export interface playerCharacter {
   uid: string;
   name: string;
   race: string;
   baseAttributes: CharacterAttributes;
   avatarPath?: string;
-  currentState: CharacterCurrentState;
+  currentState?: CharacterCurrentState;
 }
 
 export interface UserCharacter extends playerCharacter{
-  charid: string;
   createdAt: Date;
   userHandle: string;
 }
-
 interface CharacterCurrentState {
   initiative: number;
-  status: StatusEnum;
+  status: string;
   attributes: CharacterAttributes;
+  actions: {
+    offensive: number,
+    defensive: number,
+    passive: number,
+  }
 }
 
 export interface CharacterAttributes {
-  hp: number;
   atk: number;
+  hp: number;
+  mana: number;
 }
+
+export const StatusEnum = {
+  null: null,
+  alive: "Alive",
+  dead: "Dead",
+}
+// ################################################
 
 export const CharacterRaceEnum = {
   Human: "Human",
@@ -32,16 +46,25 @@ export const CharacterRaceEnum = {
   Angel: "Angel",
   Demon: "Demon"
 }
-export enum StatusEnum {
-  null,
-  dead,
-}
+
 
 export class CharacterClass {
   character: Character;
 
   constructor(ICharacter: Character){
     this.character = ICharacter;
+    if(_.isEmpty(this.character.currentState)){
+      this.character.currentState = {
+        initiative: 1,
+        status: StatusEnum.alive,
+        attributes: {...ICharacter.baseAttributes},
+        actions:{
+          defensive: 1,
+          offensive: 1,
+          passive: 1,
+        }
+      }
+    }
   }
 
   basicAttack = (): number => {

@@ -6,27 +6,35 @@ export type Errors = {
     name: string,
 }
 
-export interface Character {
+
+export type Character = playerCharacter | UserCharacter;
+
+export interface playerCharacter {
   uid: string;
   name: string;
   race: string;
   baseAttributes: CharacterAttributes;
   avatarPath?: string;
-  currentState?: CharacterCurrentState;
+  currentState: CharacterCurrentState;
+  inParty?: boolean;
 }
 
-
-export interface UserCharacter extends Character{
-    createdAt: string;
-    userHandle: string;
+export interface UserCharacter extends playerCharacter{
+  createdAt: Date;
+  userHandle: string;
 }
-
 interface CharacterCurrentState {
-    initiative: number;
-    attributes: CharacterAttributes;
-  }
+  initiative: number;
+  status: StatusEnum;
+  attributes: CharacterAttributes;
+}
 
 export interface CharacterAttributes {
-    hp: number;
-    atk: number;
+  hp: number;
+  atk: number;
+}
+
+export enum StatusEnum {
+  null,
+  dead,
 }

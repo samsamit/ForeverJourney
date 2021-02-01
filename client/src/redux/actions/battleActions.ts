@@ -9,14 +9,8 @@ import { ADD_PLAYER, BattleState, BATTLE_UPDATE, CLEAR_ERRORS, LOADING_UI, NEXT_
 import { getUserData } from "./userActions";
 
 export const selectPlayer = (player: Character, otherPlayers: Array<Character>) => dispatch => {
-    if (!player.currentState) {
-        player.currentState = {
-            initiative: otherPlayers.length,
-            attributes: {...player.baseAttributes},
-            status: StatusEnum.null,
-        };
-      }
-      dispatch({ type: ADD_PLAYER, payload: player });
+    const newCharacter = new CharacterClass(player);
+    dispatch({ type: ADD_PLAYER, payload: newCharacter.getCharacterObject });
 }
 
 export const endTurn = (currentBattleState: BattleState) => (dispatch) => {
@@ -33,7 +27,6 @@ export const endTurn = (currentBattleState: BattleState) => (dispatch) => {
     console.log(nextPlayer);
     dispatch({type: NEXT_TURN, payload: nextPlayer.uid});
 };
-
 
 export const dealDamage = (currentBattleState: BattleState) => (dispatch) => {
     const player = new CharacterClass(getPlayerByUid(currentBattleState.playerTurn, currentBattleState.players));

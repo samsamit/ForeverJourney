@@ -86,9 +86,10 @@ exports.login = (req, res) => {
 };
 
 exports.addUserDetails = (req, res) => {
-    let userDetails = reduceUserDetails(req.body);
+    const {valid, errors} = reduceUserDetails(req.body);
+    if (!valid) return res.status(400).json(errors);
 
-    db.doc(`/users/${req.user.handle}`).update(userDetails)
+    db.doc(`/users/${req.user.handle}`).update(req.body)
         .then(() => {
             return res.json({meassage: 'Details added successfully'});
         })
@@ -99,26 +100,13 @@ exports.addUserDetails = (req, res) => {
 };
 
 exports.getAuthenticatedUser = (req, res) => {
-  let userData = {
-      credentials: undefined,
-      characters: [],
-  };
   db.doc(`/users/${req.user.handle}`).get()
       .then(doc=>{
           if (doc.exists){
-              userData.credentials = doc.data();
-              return db.collection('characters').where('userHandle', '==', req.user.handle).get();
+            return res.json(doc.data());
+          }else{
+              throw new Error("No document found");
           }
-      })
-      .then(data =>{
-          userData.characters = [];
-          data?.forEach(doc => {
-              let docData = doc.data();
-              // @ts-ignore
-              userData.characters.push(docData);
-          });
-          console.log(userData);
-          return res.json(userData);
       })
       .catch(err =>{
           console.error(err);

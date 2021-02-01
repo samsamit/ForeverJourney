@@ -10,10 +10,13 @@ export const SET_USERCHARACTERS = "SET_USERCHARACTERS";
 export interface UserState {
   authenticated: boolean;
   loading: boolean;
-  userData: {
-    credentials: UserCredentials;
-    characters: Array<UserCharacter>;
-  };
+  userData: UserData;
+}
+
+interface UserData {
+  credentials: UserCredentials;
+  party: Array<Character>;
+  characters: Array<Character>;
 }
 export interface UserCredentials {
   createdAt?: string;

@@ -1,18 +1,18 @@
-import { Character, StatusEnum } from "../../Types/Character/characterTypes";
+import { Character, CharacterClass, StatusEnum } from "../../Types/Character/characterTypes";
 import { getRandomAvatar } from "../../util/getRandomAvatar";
 import { getUid } from "../../util/getUid";
 
 export const generateEnemy = () => {
-    const newEnemy: Character = {
+    const newEnemy = new CharacterClass({
       uid: getUid(),
       name: "Bot",
       race: "Robot",
       baseAttributes: {
         atk: 1,
         hp: 10,
+        mana: 10,
       },
-      currentState: { attributes: { atk: 1, hp: 10 }, initiative: 2, status: StatusEnum.null},
       avatarPath: getRandomAvatar(),
-    };
-    return newEnemy;
+    });
+    return newEnemy.getCharacterObject;
   };

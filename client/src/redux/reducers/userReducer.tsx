@@ -1,3 +1,4 @@
+import _ from "lodash";
 import {
   SET_USER,
   SET_AUTHENTICATED,
@@ -13,6 +14,7 @@ const initialState: UserState = {
   userData: {
     characters: null,
     credentials: null,
+    party: [],
   },
 };
 
@@ -25,12 +27,17 @@ export default function (state = initialState, action: any) {
         loading: false,
       };
     case SET_UNAUTHENTICATED:
-      return initialState;
+      return state;
     case SET_USER:
       return {
         ...state,
         userData: {
-          ...action.payload,
+          ...state.userData,
+          credentials: _.pickBy(
+            action.payload,
+            (value, key) => key !== "party"
+          ),
+          party: action.payload.party,
         },
         loading: false,
       };

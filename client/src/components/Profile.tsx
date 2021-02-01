@@ -76,14 +76,9 @@ class Profile extends Component<IProps> {
               alt="ProfilePic"
             />
             <div className={classes.profileDetails}>
-              <Link
-                component={routerLink}
-                to={`/users/${handle}`}
-                color="primary"
-                variant="h5"
-              >
-                @{handle}
-              </Link>
+              <Typography color="primary" variant="h5">
+                {handle}
+              </Typography>
               <hr />
               {bio && <Typography variant="body2">{bio}</Typography>}
               <CalendarToday color="primary" />{" "}
@@ -94,7 +89,7 @@ class Profile extends Component<IProps> {
                 <KeyboardReturn color="primary"></KeyboardReturn>
               </IconButton>
             </Tooltip>
-            <EditDetails></EditDetails>
+            <EditDetails />
           </div>
         </Card>
       ) : (

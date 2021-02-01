@@ -15,6 +15,7 @@ import {
   Grid,
   Hidden,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import {
   ADD_TARGET,
@@ -61,6 +62,7 @@ interface IProps {
 }
 
 const BattleCardTester = (props: IProps) => {
+  const theme = useTheme();
   const [targetted, setTargetted] = useState(false);
   const [myTurn, setmyTurn] = useState(false);
   const { classes, character } = props;
@@ -118,12 +120,18 @@ const BattleCardTester = (props: IProps) => {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {character.name + targetted}
+            {character.name}
           </Typography>
           {charAttributes}
           <StatusBar
             currentValue={character.currentState.attributes.hp}
             maxValue={character.baseAttributes.hp}
+            color={theme.palette.health}
+          />
+          <StatusBar
+            currentValue={character.currentState.attributes.mana}
+            maxValue={character.baseAttributes.mana}
+            color={theme.palette.mana}
           />
         </CardContent>
       </CardActionArea>
