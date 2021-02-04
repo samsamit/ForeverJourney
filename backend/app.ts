@@ -1,5 +1,5 @@
 import { RequestHandler, ErrorRequestHandler  } from 'express';
-import { testAPIRouter } from './routes/testApi';
+import { testAPIRouter } from './mothods/testApi';
 
 var createError = require('http-errors');
 var express = require('express');
