@@ -1,0 +1,20 @@
+{
+  "name": "Forever Journey",
+  "short_name": "Forever Journey",
+  "icons": [
+    {
+      "src": "./media/ForeverJourneyIcon192.ico",
+      "type": "image/x-icon",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./media/ForeverJourneyIcon512.ico",
+      "type": "image/x-icon",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

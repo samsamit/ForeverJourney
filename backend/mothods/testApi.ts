@@ -6,16 +6,10 @@ export const testAPIRouter = async (req: Request, res: Response) => {
         username: 'rwieruch',
       });
      
-
-     
-      const message1 = new models.Message({
-        text: 'Published the Road to learn React',
-        user: user1.id,
+      await user1.save().catch(err => {
+        console.log(err);
+        res.send("Chatched an error!!");
       });
-
-      await message1.save();
-     
-      await user1.save();
 
       
     res.send("Api works fine!");
