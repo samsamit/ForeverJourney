@@ -5,7 +5,8 @@ const config = {
     mongoDbConfig:{
         useNewUrlParser: true,
         useUnifiedTopology: true
-    }
+    },
+    secretKey: "MariOnIhana",
 }
 
 export default config;

@@ -1,4 +1,4 @@
-import { Styles } from "@material-ui/styles";
+﻿import { Styles } from "@material-ui/styles";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,20 +13,18 @@ interface IProps {
   classes?: any;
 }
 
-const login = (props: IProps) => {
+const signin = (props: IProps) => {
   const { classes } = props;
   const dispatch = useDispatch();
   return (
-    <div>
-      <form action="">
-        <TextField label="username" />
-        <TextField label="password" />
-        <Button variant="contained" color="primary">
-          Login
-        </Button>
-      </form>
-    </div>
+    <form action="">
+      <TextField label="username" />
+      <TextField label="password" />
+      <Button variant="contained" color="primary">
+        signin
+      </Button>
+    </form>
   );
 };
 
-export default withStyles(styles)(login);
+export default withStyles(styles)(signin);
