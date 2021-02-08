@@ -47,7 +47,7 @@ export const signin = async (req: Request, res: Response) => {
     createdAt: user.createdAt
   }
 
-  return res.status(200).send({resUser, token});
+  return res.status(200).send({user: resUser, token});
 }
 
 export const signup = async (req: Request, res: Response) => {

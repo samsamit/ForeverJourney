@@ -3,9 +3,11 @@ import { withStyles, Theme } from "@material-ui/core/styles";
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { signup } from "../actions/userHandling";
 import { IUser } from "../interfaces/user";
+import { IRootState } from "../store";
+import { useSelector } from "react-redux";
 
 const styles: Styles<Theme, Record<string, unknown>, string> = (
   theme: Theme
@@ -17,6 +19,8 @@ interface IProps {
 
 const Signup = (props: IProps) => {
   const { classes } = props;
+  const loggedIn = useSelector((state: IRootState) => state.user.loggedIn);
+
   const [formData, setformData] = useState({
     username: "",
     email: "",
@@ -33,6 +37,8 @@ const Signup = (props: IProps) => {
   const handleChange = (e: any) => {
     setformData({ ...formData, [e.target.id]: e.target.value });
   };
+
+  if (loggedIn) return <Redirect to="/" />;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -59,7 +65,7 @@ const Signup = (props: IProps) => {
       <Button variant="contained" color="primary" type="submit">
         signin
       </Button>
-      <Link to="/signup">You can also login</Link>
+      <Link to="/signin">You can also login</Link>
     </form>
   );
 };

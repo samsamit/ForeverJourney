@@ -10,30 +10,40 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import login from "./pages/login";
+import Signin from "./pages/signin";
 import signup from "./pages/signup";
+import { getToken, validateToken } from "./actions/userHandling";
 
 function App() {
   let history = useHistory();
-  const [apimsg, setapimsg] = useState("");
+  let location = useLocation();
+  //Checks localstorage fot token and handles
+  if (validateToken()) {
+    if (location.pathname === "/signin" || location.pathname === "/signup") {
+      history.push("/");
+      console.log("validata success!");
+    }
+  } else {
+    if (location.pathname !== "/signup" && location.pathname !== "/signin") {
+      history.push("/signin");
+      console.log("validata not success!");
+    }
+  }
 
-  API.get("/testApi")
-    .then((res) => {
-      setapimsg(res.data);
-    })
-    .catch((err) => console.log(err));
   return (
     <div>
       <Switch>
         <Route exact path="/">
           <div className="App">
-            <header className="App-header">Api: {apimsg}</header>
+            <header className="App-header">
+              Olet authentikoitunut oikein!
+            </header>
             <p>Toimiihan tämä</p>
-            <Link to="/login">You can also login</Link>
+            <Link to="/signin">You can also login</Link>
             <Link to="/signup">You can also SIGNUP</Link>
           </div>
         </Route>
-        <Route exact path="/login" component={login} />
+        <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={signup} />
       </Switch>
     </div>
