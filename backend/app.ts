@@ -1,7 +1,7 @@
 import { RequestHandler, ErrorRequestHandler  } from 'express';
 import { testAPIRouter } from './methods/testApi';
 import authJwt from "./handleJWT";
-import { signup, login } from './methods/userHandling';
+import { signup, signin } from './methods/userHandling';
 
 var createError = require('http-errors');
 var express = require('express');
@@ -21,7 +21,7 @@ app.use(cors());
 
 app.get('/testApi', testAPIRouter);
 app.post('/signup', signup);
-app.post('/login', login);
+app.post('/signin', signin);
 
 // catch 404 and forward to error handler
 app.use(<RequestHandler>function (req, res, next) {

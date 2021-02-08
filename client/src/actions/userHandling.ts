@@ -3,12 +3,12 @@
 import API from "../api";
 import { IUser } from "../interfaces/user";
 
-export const login = (iusername: string, ipassword: string) => {
-    const loginUser = {
+export const signin = (iusername: string, ipassword: string) => {
+    const signinUser = {
         username: iusername,
         password: ipassword
     }
-    API.post("/login", loginUser)
+    API.post("/signin", signinUser)
     .then((res) => {
       console.log(res.data);
     })

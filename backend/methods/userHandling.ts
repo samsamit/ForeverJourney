@@ -28,7 +28,7 @@ export const testAPIRouter = async (req: Request, res: Response) => {
     res.send("Api works fine!");
 }
 
-export const login = async (req: Request, res: Response) => {
+export const signin = async (req: Request, res: Response) => {
   if(isEmpty(req.body.username)) return res.status(400).send({name: "Username cant be empty"});
   if(isEmpty(req.body.password)) return res.status(400).send({password: "Password cant be empty"});
   //Check if user exists
@@ -63,7 +63,8 @@ export const signup = async (req: Request, res: Response) => {
     });
 
     await newUser.save().then(() => {
-      return res.status(200).send({message: "SignUp went smoothly!"})
+      let token = createJwt(newUser!.id);
+      return res.status(200).send({user: newUser, token})
     }).catch(err => {
       if (err.name === 'MongoError' && err.code === 11000) {
         // Duplicate username
