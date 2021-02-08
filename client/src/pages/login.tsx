@@ -1,9 +1,10 @@
 import { Styles } from "@material-ui/styles";
 import { withStyles, Theme } from "@material-ui/core/styles";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const styles: Styles<Theme, Record<string, unknown>, string> = (
   theme: Theme
@@ -13,9 +14,8 @@ interface IProps {
   classes?: any;
 }
 
-const login = (props: IProps) => {
+const Login = (props: IProps) => {
   const { classes } = props;
-  const dispatch = useDispatch();
   return (
     <div>
       <form action="">
@@ -24,9 +24,10 @@ const login = (props: IProps) => {
         <Button variant="contained" color="primary">
           Login
         </Button>
+        <Link to="/signup">You can also signUp</Link>
       </form>
     </div>
   );
 };
 
-export default withStyles(styles)(login);
+export default withStyles(styles)(Login);

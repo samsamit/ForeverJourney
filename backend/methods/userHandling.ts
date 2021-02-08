@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const signup = async (req: Request, res: Response) => {
     if(isEmpty(req.body.username)) return res.status(400).send({name: "Username cant be empty"});
-    if(isEmail(req.body.email)) return res.status(400).send({email: "Name cant be empty"});
+    if(isEmail(req.body.email)) return res.status(400).send({email: "Email cant be empty"});
     if(!checkPassword(req.body.password).valid) return res.status(400).send({password: checkPassword(req.body.password).error});
 
     const newUser: MUserDocument = new User({

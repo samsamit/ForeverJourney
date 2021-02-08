@@ -36,7 +36,6 @@ export const PasswordCheckService = (password: string) => {
     } else {
         currentPasswordStrength = PasswordCheckStrength.Strong;
     }
-
     // Return the strength of this password
     return currentPasswordStrength;
 }
