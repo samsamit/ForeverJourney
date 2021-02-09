@@ -13,7 +13,7 @@ export const signin = async (iuser: {username: string, password: string}) => {
       store.dispatch({type: AUTH_USER, data: res.data.user})
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.response.data);
       store.dispatch({type: SET_ERRORS, data: err.response.data})
     });
 }

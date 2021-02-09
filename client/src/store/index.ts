@@ -1,6 +1,7 @@
 ﻿import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import userReducer from "../reducers/userReducer";
 import thunk from "redux-thunk";
+import uiReducer from "../reducers/uiReducer";
 export interface ReducerInput{
     type: string,
     data: any,
@@ -14,7 +15,7 @@ declare global {
 
   const reducers = combineReducers({
     user: userReducer,
-
+    ui: uiReducer,
   });
 
   export type IRootState = ReturnType<typeof reducers>;

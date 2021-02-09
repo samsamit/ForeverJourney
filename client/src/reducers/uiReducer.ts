@@ -1,5 +1,5 @@
 ﻿import { ReducerInput } from "../store"
-import { SET_ERRORS } from "../store/types"
+import { CLEAR_ERRORS, SET_ERRORS } from "../store/types"
 
 export interface IUiState {
     errors: any;
@@ -16,6 +16,11 @@ export default (state = initialState,  action: ReducerInput) => {
         return {
             ...state,
             errors: {...action.data}
+        }
+    case CLEAR_ERRORS:
+        return {
+            ...state,
+            errors: {}
         }
 
     default:

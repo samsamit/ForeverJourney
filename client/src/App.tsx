@@ -12,11 +12,21 @@ import {
 } from "react-router-dom";
 import Signin from "./pages/signin";
 import signup from "./pages/signup";
-import { getToken, validateToken } from "./actions/userHandling";
+import { validateToken } from "./actions/userHandling";
+import { useSelector } from "react-redux";
+import { IRootState } from "./store";
+import { useSnackbar } from "notistack";
 
 function App() {
   let history = useHistory();
   let location = useLocation();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const errors = useSelector((state: IRootState) => state.ui.errors);
+
+  useEffect(() => {
+    if (errors.error) enqueueSnackbar(errors.error, { variant: "error" });
+  }, [errors.error]);
+
   //Checks localstorage fot token and handles
   if (validateToken()) {
     if (location.pathname === "/signin" || location.pathname === "/signup") {

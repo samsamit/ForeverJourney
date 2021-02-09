@@ -13,27 +13,12 @@ const createJwt = (userId: string) => {
   });
 }
 
-
-export const testAPIRouter = async (req: Request, res: Response) => {
-    const user1 = new models.User({
-        username: 'rwieruch',
-      });
-     
-      await user1.save().catch(err => {
-        console.log(err);
-        res.send("Chatched an error!!");
-      });
-
-      
-    res.send("Api works fine!");
-}
-
 export const signin = async (req: Request, res: Response) => {
-  if(isEmpty(req.body.username)) return res.status(400).send({name: "Username cant be empty"});
+  if(isEmpty(req.body.username)) return res.status(400).send({username: "Username cant be empty"});
   if(isEmpty(req.body.password)) return res.status(400).send({password: "Password cant be empty"});
   //Check if user exists
   const user = await User.findByLogin(req.body.username);
-  if(user === null) return res.status(400).send({password: "You dont exist bruh?!"});
+  if(user === null) return res.status(400).send({error: "You dont exist bruh?!"});
   //Check if password ok
   const passOk = await bcrypt.compare(req.body.password, user?.password!);
   if(!passOk) return res.status(401).send({password: "Wrong password dude!"});
@@ -51,7 +36,7 @@ export const signin = async (req: Request, res: Response) => {
 }
 
 export const signup = async (req: Request, res: Response) => {
-    if(isEmpty(req.body.username)) return res.status(400).send({name: "Username cant be empty"});
+    if(isEmpty(req.body.username)) return res.status(400).send({username: "Username cant be empty"});
     if(isEmail(req.body.email)) return res.status(400).send({email: "Email cant be empty"});
     if(!checkPassword(req.body.password).valid) return res.status(400).send({password: checkPassword(req.body.password).error});
 

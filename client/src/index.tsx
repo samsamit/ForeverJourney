@@ -9,13 +9,23 @@ import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
-          <App />
+          <SnackbarProvider
+            maxSnack={3}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            preventDuplicate
+          >
+            <App />
+          </SnackbarProvider>
         </Router>
       </Provider>
     </ThemeProvider>

@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import { Link, Redirect } from "react-router-dom";
 import { signin } from "../actions/userHandling";
 import { IRootState } from "../store";
+import { CLEAR_ERRORS } from "../store/types";
+import isEmpty from "lodash/isEmpty";
 
 const styles: Styles<Theme, Record<string, unknown>, string> = (
   theme: Theme
@@ -18,7 +20,9 @@ interface IProps {
 
 const Signin = (props: IProps) => {
   const { classes } = props;
+  const dispatch = useDispatch();
   const loggedIn = useSelector((state: IRootState) => state.user.loggedIn);
+  const errors = useSelector((state: IRootState) => state.ui.errors);
   const [formData, setformData] = useState({
     username: "",
     password: "",
@@ -33,6 +37,7 @@ const Signin = (props: IProps) => {
 
   const handleChange = (e: any) => {
     setformData({ ...formData, [e.target.id]: e.target.value });
+    if (!isEmpty(errors)) dispatch({ type: CLEAR_ERRORS });
   };
 
   if (loggedIn) return <Redirect to="/" />;
@@ -45,6 +50,8 @@ const Signin = (props: IProps) => {
           id="username"
           value={formData.username}
           onChange={handleChange}
+          error={errors.username}
+          helperText={errors.username}
         />
         <TextField
           label="password"
@@ -52,6 +59,8 @@ const Signin = (props: IProps) => {
           type="password"
           value={formData.password}
           onChange={handleChange}
+          error={errors.password}
+          helperText={errors.password}
         />
         <Button variant="contained" color="primary" type="submit">
           Signin
