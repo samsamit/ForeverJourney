@@ -1,25 +1,31 @@
-﻿import { ReducerInput } from "../store"
-import { AUTH_USER } from "../store/types"
+﻿import { IUser } from "../interfaces/user"
+import { ReducerInput } from "../store"
+import { AUTH_USER, LOGOUT_USER } from "../store/types"
 
 export interface IUserState {
     loggedIn: boolean;
-    userInfo: any;
+    token: string;
+    userInfo?: IUser;
 }
 
 const initialState: IUserState = {
     loggedIn: false,
-    userInfo: {}
+    userInfo: undefined,
+    token: ''
 }
 
-export default (state = initialState,  action: ReducerInput) => {
+export default (state: IUserState = initialState,  action: ReducerInput): IUserState => {
     switch (action.type) {
 
     case AUTH_USER:
         return {
-            ...state,
-            userInfo: action.data,
+            userInfo: action.data.user,
+            token: action.data.token,
             loggedIn: true,
         }
+    
+    case LOGOUT_USER:
+        return initialState
 
     default:
         return state

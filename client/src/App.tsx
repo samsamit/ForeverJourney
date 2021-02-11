@@ -10,8 +10,9 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import Signin from "./pages/signin";
-import signup from "./pages/signup";
+import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
+import Home from "./pages/Home";
 import { validateToken } from "./actions/userHandling";
 import { useSelector } from "react-redux";
 import { IRootState } from "./store";
@@ -22,39 +23,33 @@ function App() {
   let location = useLocation();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const errors = useSelector((state: IRootState) => state.ui.errors);
-
+  const token = useSelector((state: IRootState) => state.user.token);
+  const [validate, setValidate] = useState(false);
   useEffect(() => {
     if (errors.error) enqueueSnackbar(errors.error, { variant: "error" });
   }, [errors.error]);
 
   //Checks localstorage fot token and handles
-  if (validateToken()) {
-    if (location.pathname === "/signin" || location.pathname === "/signup") {
+  if (validateToken(token)) {
+    if (!validate) {
       history.push("/");
-      console.log("validata success!");
+      console.log("validate success!");
+      setValidate(true);
     }
   } else {
-    if (location.pathname !== "/signup" && location.pathname !== "/signin") {
+    if (validate) {
+      setValidate(false);
       history.push("/signin");
-      console.log("validata not success!");
+      console.log("validate not success!");
     }
   }
 
   return (
     <div>
       <Switch>
-        <Route exact path="/">
-          <div className="App">
-            <header className="App-header">
-              Olet authentikoitunut oikein!
-            </header>
-            <p>Toimiihan tämä</p>
-            <Link to="/signin">You can also login</Link>
-            <Link to="/signup">You can also SIGNUP</Link>
-          </div>
-        </Route>
+        <Route exact path="/" component={Home} />
         <Route exact path="/signin" component={Signin} />
-        <Route exact path="/signup" component={signup} />
+        <Route exact path="/signup" component={Signup} />
       </Switch>
     </div>
   );
