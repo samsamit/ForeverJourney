@@ -26,3 +26,9 @@ export const checkPassword = (pass: string) => {
             return {valid: false, error: "something went wrong"}
     }
 }
+
+export const checkCharacter = (character: ICharacter): {valid: boolean, error: any} => {
+    if(!isEmpty(character.name)) return {valid: false, error: {name: "Char name is empty!"}}
+
+    return {valid: true, error: null}
+}
